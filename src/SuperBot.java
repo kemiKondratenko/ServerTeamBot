@@ -30,24 +30,31 @@ public class SuperBot implements CheckersBot{
     @Override
     public Step calculateNextStep(Field field) {
         List<Step> stepList = new ArrayList<Step>();
-        Map<Check, List<Step>> checkSteps = new HashMap<Check, List<Step>>();
         for(Check check : fieldUtil.getWhiteChecks(field)){
-            List<Step> steps = stepCalculator.validSteps(field, check);
-            stepList.addAll(steps);
-            if(steps.size()>0)
-            checkSteps.put(check, steps);
+            stepList.addAll(stepCalculator.validSteps(field, check));
         }
         List<Step> stepsForHeat = longest(stepCalculator.getHeatSteps(field, stepList));
-        System.out.println(checkSteps.size());
-        for(Check ch: checkSteps.keySet()) {
-            for(Step st: checkSteps.get(ch)) {
-                List<Field> nextFields = getFieldAfterStep(field, ch, st);
-                System.out.println(nextFields.size());
-            }
+        List<Field> next = calculateNextFields(field);
+        for(Field f: next){
+            calculateNextFields(f);
         }
         return stepsForHeat.isEmpty() ?
                 stepList.get(stepList.size() == 1 ? 0 : random.nextInt(stepList.size() - 1)) :
                 stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1));
+    }
+
+    private List<Field> calculateNextFields(Field field){
+        Map<Check, List<Step>> checkSteps = new HashMap<Check, List<Step>>();
+        List<Field> myNextFields = new ArrayList<Field>();
+        for(Check check : fieldUtil.getWhiteChecks(field)){
+            List<Step> steps = stepCalculator.validSteps(field, check);
+            if(steps.size()>0)
+                checkSteps.put(check, steps);
+        }
+        for(Check ch: checkSteps.keySet())
+            for(Step st: checkSteps.get(ch))
+                 myNextFields.addAll(getFieldAfterStep(field, ch, st));
+        return myNextFields;
     }
 
     private List<Field> getFieldAfterStep(Field oldField, Check check, Step step){
