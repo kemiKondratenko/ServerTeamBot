@@ -25,25 +25,37 @@ public class StepCalculator {
     public List<Step> validSteps(Field field, Check check){
         List<Position> positionList = collectPositions(check);
         positionList = validatePositions(field, check, positionList);
-        List<Step> stepList = createSteps(field, check, positionList);
+        List<Position> heatPositions = getHeatSteps(field, check, positionList);
+        positionList = heatPositions.isEmpty() ? positionList : heatPositions;
+        List<Step> stepList = createSteps(field, check, positionList, heatPositions);
         return stepList;
     }
 
-    private List<Step> createSteps(Field field, Check check, List<Position> positionList) {
+    private List<Step> validHeats(Field field, Check check) {
+        List<Position> positionList = collectPositions(check);
+        positionList = validatePositions(field, check, positionList);
+        positionList = getHeatSteps(field, check, positionList);
+        List<Step> stepList = createSteps(field, check, positionList, positionList);
+        return stepList;
+    }
+
+    private List<Step> createSteps(Field field, Check check,
+                                   List<Position> positionList, List<Position> heatPositions) {
         List<Step> stepList = new ArrayList<Step>();
         for(Position position: positionList){
             ArrayList<Position> positions = new ArrayList<Position>();
             positions.add(position);
             stepList.add(new Step(check, positions));
         }
-        List<Step> longerSteps = new ArrayList<Step>();
-        for (Step step : stepList){
-            if(isBeating(field, step)) {
+        if(!heatPositions.isEmpty()) {
+            List<Step> longerSteps = new ArrayList<Step>();
+            for (Step step : getHeatSteps(field, stepList)) {
                 Field fieldForStep = fieldUtil.copy(field);
-                longerSteps.addAll(makeStepLonger(fieldForStep, step));
+                Step stepForStep = fieldUtil.copy(step);
+                longerSteps.addAll(makeStepLonger(fieldForStep, stepForStep));
             }
+            stepList.addAll(longerSteps);
         }
-        stepList.addAll(longerSteps);
         return stepList;
     }
 
@@ -58,14 +70,13 @@ public class StepCalculator {
     }
 
     private List<Step> makeStepLonger(Field field, Step step) {
+        Field fieldLocal = fieldUtil.copy(field);
         Check checkLocal = fieldUtil.copy(step.getCheck());
-        step(field, checkLocal, step.getPositionAfterMove());
-        List<Step> stepList = validSteps(field, checkLocal);
+        step(fieldLocal, checkLocal, step.getPositionAfterMove());
+        List<Step> stepList = validHeats(fieldLocal, checkLocal);
         List<Step> stepListFinal = new ArrayList<Step>();
-        for (Step stepFinal : stepList){
-            Step stepLong = concat(step, stepFinal);
-            if(isBeating(field, stepLong))
-                stepListFinal.add(stepLong);
+        for (Step stepFinal : stepList) {
+            stepListFinal.add(concat(step, stepFinal));
         }
         return stepListFinal;
     }
@@ -114,5 +125,14 @@ public class StepCalculator {
                 stepListRes.add(step);
         }
         return stepListRes;
+    }
+
+    private List<Position> getHeatSteps(Field field, Check check, List<Position> positionList) {
+        List<Position> positionsRes = new ArrayList<Position>();
+        for(Position position : positionList){
+            if(checkersRulesHolder.canBeat(field, check, position))
+                positionsRes.add(position);
+        }
+        return positionsRes;
     }
 }

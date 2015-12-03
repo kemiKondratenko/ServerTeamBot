@@ -33,9 +33,11 @@ public class SuperBot implements CheckersBot{
         for(Check check : fieldUtil.getWhiteChecks(field)){
             stepList.addAll(stepCalculator.validSteps(field, check));
         }
-        List<Step> stepsForHeat = longest(stepCalculator.getHeatSteps(field, stepList));
-        System.out.println(stepsForHeat);
-        return stepsForHeat.isEmpty() ?
+        List<Step> stepsForHeat = stepCalculator.getHeatSteps(field, stepList);
+        List<Step> longestHeat = longest(stepsForHeat);
+        return ! longestHeat.isEmpty()?
+                longestHeat.get(longestHeat.size() == 1 ? 0 : random.nextInt(longestHeat.size() - 1)) :
+                stepsForHeat.isEmpty() ?
                 stepList.get(stepList.size() == 1 ? 0 : random.nextInt(stepList.size() - 1)) :
                 stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1));
     }

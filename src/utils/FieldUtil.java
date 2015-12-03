@@ -3,6 +3,7 @@ package utils;
 import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Position;
+import com.checkers.domain.vo.Step;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,4 +56,7 @@ public class FieldUtil {
         return new Position(position.getX(), position.getY());
     }
 
+    public Step copy(Step step) {
+        return new Step(copy(step.getCheck()), (ArrayList<Position>) copy(step.getPositionAfterMove()));
+    }
 }
