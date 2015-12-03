@@ -36,13 +36,25 @@ public class StepCalculator {
             positions.add(position);
             stepList.add(new Step(check, positions));
         }
-        /*List<Step> longerSteps = new ArrayList<Step>();
+        List<Step> longerSteps = new ArrayList<Step>();
         for (Step step : stepList){
-            Field fieldForStep = fieldUtil.copy(field);
-            longerSteps.addAll(makeStepLonger(fieldForStep, step));
+            if(isBeating(field, step)) {
+                Field fieldForStep = fieldUtil.copy(field);
+                longerSteps.addAll(makeStepLonger(fieldForStep, step));
+            }
         }
-        stepList.addAll(longerSteps);*/
+        stepList.addAll(longerSteps);
         return stepList;
+    }
+
+    private boolean isBeating(Field field, Step step) {
+        Field fieldLocal = fieldUtil.copy(field);
+        Check checkLocal = fieldUtil.copy(step.getCheck());
+        for(Position position : step.getPositionAfterMove()){
+            if(!checkersRulesHolder.canBeat(fieldLocal, checkLocal, position))
+                return false;
+        }
+        return true;
     }
 
     private List<Step> makeStepLonger(Field field, Step step) {
@@ -51,7 +63,9 @@ public class StepCalculator {
         List<Step> stepList = validSteps(field, checkLocal);
         List<Step> stepListFinal = new ArrayList<Step>();
         for (Step stepFinal : stepList){
-            stepListFinal.add(concat(step, stepFinal));
+            Step stepLong = concat(step, stepFinal);
+            if(isBeating(field, stepLong))
+                stepListFinal.add(stepLong);
         }
         return stepListFinal;
     }
