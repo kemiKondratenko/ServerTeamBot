@@ -1,13 +1,15 @@
 import com.checkers.client.CheckersBot;
-import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
-import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
+import rating.Rater;
+import rating.impls.AmountOfChecks;
 import steps.CheckersRulesHolder;
 import steps.StepCalculator;
 import utils.FieldUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Eugene on 03.12.2015.
@@ -18,27 +20,20 @@ public class SuperBot implements CheckersBot{
     StepCalculator stepCalculator;
     FieldUtil fieldUtil;
     Random random;
+    List<Rater> raters;
 
     public SuperBot(){
         random = new Random();
         fieldUtil = new FieldUtil();
         checkersRulesHolder = new CheckersRulesHolder();
         stepCalculator = new StepCalculator(checkersRulesHolder, fieldUtil);
+        raters = new ArrayList<Rater>();
+        raters.add(new AmountOfChecks(fieldUtil));
     }
 
     @Override
     public Step calculateNextStep(Field field) {
-        List<Step> stepList = new ArrayList<Step>();
-        for(Check check : fieldUtil.getWhiteChecks(field)){
-            stepList.addAll(stepCalculator.validSteps(field, check));
-        }
-        List<Step> stepsForHeat = longest(stepCalculator.getHeatSteps(field, stepList));
-        List<Step> longest = longest(stepsForHeat);
-        return stepsForHeat.isEmpty() ?
-                stepList.get(stepList.size() == 1 ? 0 : random.nextInt(stepList.size() - 1)) :
-                longest.isEmpty() ?
-                stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1)) :
-                        longest.get(longest.size() == 1 ? 0 : random.nextInt(longest.size() - 1)) ;
+        return stepCalculator.validSteps(field).get(0);
     }
 
     private List<Step> longest(List<Step> stepsForHeat) {

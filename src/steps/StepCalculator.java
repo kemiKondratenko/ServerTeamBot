@@ -22,6 +22,20 @@ public class StepCalculator {
         this.fieldUtil = fieldUtil;
     }
 
+    public List<Step> validSteps(Field field){
+        List<Step> stepList = new ArrayList<Step>();
+        for(Check check : fieldUtil.getWhiteChecks(field)){
+            stepList.addAll(validSteps(field, check));
+        }
+
+
+        List<Step> stepsForHeat = getHeatSteps(field, stepList);
+
+        return stepsForHeat.isEmpty() ?
+                stepList :
+                stepsForHeat;
+    }
+
     public List<Step> validSteps(Field field, Check check){
         List<Position> positionList = collectPositions(check);
         positionList = validatePositions(field, check, positionList);
