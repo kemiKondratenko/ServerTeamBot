@@ -1,8 +1,8 @@
 import com.checkers.client.CheckersBot;
 import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
-import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
+import rating.FieldTree;
 import steps.CheckersRulesHolder;
 import steps.StepCalculator;
 import utils.FieldUtil;
@@ -18,6 +18,7 @@ public class SuperBot implements CheckersBot{
     StepCalculator stepCalculator;
     FieldUtil fieldUtil;
     Random random;
+    FieldTree tree;
 
     public SuperBot(){
         random = new Random();
@@ -32,6 +33,8 @@ public class SuperBot implements CheckersBot{
         for(Check check : fieldUtil.getWhiteChecks(field)){
             stepList.addAll(stepCalculator.validSteps(field, check));
         }
+        tree = new FieldTree(field);
+        tree.getBestField();
         List<Step> stepsForHeat = longest(stepCalculator.getHeatSteps(field, stepList));
         List<Step> longest = longest(stepsForHeat);
         return stepsForHeat.isEmpty() ?
