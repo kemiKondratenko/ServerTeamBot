@@ -6,9 +6,10 @@
 .project
 .metadata
 bin/
-out/
+out/*
 tmp/
 *.tmp
+*.class
 *.bak
 *.swp
 *~.nib
