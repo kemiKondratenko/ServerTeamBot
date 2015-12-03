@@ -1,7 +1,6 @@
-package rating.impls;
+package rating.impl;
 
 import com.checkers.domain.vo.Field;
-import steps.CheckersRulesHolder;
 import rating.Rater;
 import steps.StepCalculator;
 
@@ -10,17 +9,14 @@ import steps.StepCalculator;
  */
 public class AmountOfHeatSteps implements Rater{
 
-    CheckersRulesHolder checkersRulesHolder;
     StepCalculator stepCalculator;
 
-    public AmountOfHeatSteps(CheckersRulesHolder checkersRulesHolder, StepCalculator stepCalculator) {
-        this.checkersRulesHolder = checkersRulesHolder;
+    public AmountOfHeatSteps(StepCalculator stepCalculator) {
         this.stepCalculator = stepCalculator;
     }
 
     @Override
     public int rate(Field field) {
-        //stepCalculator.
-        return 0;
+        return stepCalculator.getHeatSteps(field, stepCalculator.validSteps(field)).size();
     }
 }

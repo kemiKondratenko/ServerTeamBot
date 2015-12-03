@@ -1,4 +1,4 @@
-package rating.impls;
+package rating.impl;
 
 import com.checkers.domain.vo.Field;
 import rating.Rater;

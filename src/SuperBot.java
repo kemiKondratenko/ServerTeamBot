@@ -2,7 +2,7 @@ import com.checkers.client.CheckersBot;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Step;
 import rating.Rater;
-import rating.impls.AmountOfChecks;
+import rating.impl.AmountOfChecks;
 import steps.CheckersRulesHolder;
 import steps.StepCalculator;
 import utils.FieldUtil;
