@@ -149,7 +149,7 @@ public class CheckersRulesHolder {
                 && position.getY() <= MAX_SIZE && position.getY() >= MIN_SIZE;
     }
 
-    private void step(Field currentField, Check check, Position position) {
+    public void step(Field currentField, Check check, Position position) {
         if (isSimpleStep(check.getPosition(), position)) {
             makeSimpleStep(currentField, check, position);
         } else {
@@ -182,7 +182,7 @@ public class CheckersRulesHolder {
                 || canBeat(currentField, check, position);
     }
 
-    private boolean canBeat(Field currentField, Check check, Position position) {
+    public boolean canBeat(Field currentField, Check check, Position position) {
         boolean result = true;
         result &= isPositionValid(currentField, position);// there is no other checks on positio
         result &= isPositionValid(position);//position is in borders
