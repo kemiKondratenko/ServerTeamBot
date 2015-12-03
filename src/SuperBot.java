@@ -34,44 +34,9 @@ public class SuperBot implements CheckersBot{
             stepList.addAll(stepCalculator.validSteps(field, check));
         }
         List<Step> stepsForHeat = longest(stepCalculator.getHeatSteps(field, stepList));
-        List<Field> next = calculateNextFields(field);
-        for(Field f: next){
-            calculateNextFields(f);
-        }
         return stepsForHeat.isEmpty() ?
                 stepList.get(stepList.size() == 1 ? 0 : random.nextInt(stepList.size() - 1)) :
                 stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1));
-    }
-
-    private List<Field> calculateNextFields(Field field){
-        Map<Check, List<Step>> checkSteps = new HashMap<Check, List<Step>>();
-        List<Field> myNextFields = new ArrayList<Field>();
-        for(Check check : fieldUtil.getWhiteChecks(field)){
-            List<Step> steps = stepCalculator.validSteps(field, check);
-            if(steps.size()>0)
-                checkSteps.put(check, steps);
-        }
-        for(Check ch: checkSteps.keySet())
-            for(Step st: checkSteps.get(ch))
-                 myNextFields.addAll(getFieldAfterStep(field, ch, st));
-        return myNextFields;
-    }
-
-    private List<Field> getFieldAfterStep(Field oldField, Check check, Step step){
-        List<Field> result = new ArrayList<Field>();
-        ArrayList<Check> fieldChecks = new ArrayList<Check>(oldField.getAllChecks());
-        for(int i=0;i<fieldChecks.size();++i){
-            if (fieldChecks.get(i) == check) {
-                Position old = check.getPosition();
-                for (Position pos : step.getPositionAfterMove()) {
-                    fieldChecks.get(i).setPosition(pos);
-                    Field f = new Field();
-                    f.setAllChecks(new HashSet<Check>(fieldChecks));
-                    result.add(f);
-                }
-            }
-        }
-        return result;
     }
 
     private List<Step> longest(List<Step> stepsForHeat) {
