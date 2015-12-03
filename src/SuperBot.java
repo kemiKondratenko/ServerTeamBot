@@ -3,7 +3,6 @@ import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
-import org.w3c.dom.html.HTMLDirectoryElement;
 import steps.CheckersRulesHolder;
 import steps.StepCalculator;
 import utils.FieldUtil;
@@ -34,9 +33,12 @@ public class SuperBot implements CheckersBot{
             stepList.addAll(stepCalculator.validSteps(field, check));
         }
         List<Step> stepsForHeat = longest(stepCalculator.getHeatSteps(field, stepList));
+        List<Step> longest = longest(stepsForHeat);
         return stepsForHeat.isEmpty() ?
                 stepList.get(stepList.size() == 1 ? 0 : random.nextInt(stepList.size() - 1)) :
-                stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1));
+                longest.isEmpty() ?
+                stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1)) :
+                        longest.get(longest.size() == 1 ? 0 : random.nextInt(longest.size() - 1)) ;
     }
 
     private List<Step> longest(List<Step> stepsForHeat) {

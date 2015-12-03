@@ -23,7 +23,7 @@ public class FieldTree {
     private List<FieldTree> leafs;
 
     private void BuildTree(Field root){
-        List<Field> next = calculateNextFields(field);
+        List<Field> next = calculateNextFields(root);
         for(Field f: next){
             calculateNextFields(f);
         }
