@@ -33,7 +33,10 @@ public class SuperBot implements CheckersBot{
         for(Check check : fieldUtil.getWhiteChecks(field)){
             stepList.addAll(stepCalculator.validSteps(field, check));
         }
-        return stepList.get(random.nextInt(stepList.size() - 1));
+        List<Step> stepsForHeat = stepCalculator.getHeatSteps(field, stepList);
+        return stepsForHeat.isEmpty() ?
+                stepList.get(random.nextInt(stepList.size() - 1)) :
+                stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1));
     }
 
 }

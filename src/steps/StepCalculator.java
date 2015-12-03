@@ -93,4 +93,12 @@ public class StepCalculator {
         return positionList;
     }
 
+    public List<Step> getHeatSteps(Field field, List<Step> stepList) {
+        List<Step> stepListRes = new ArrayList<Step>();
+        for(Step step : stepList){
+            if(checkersRulesHolder.canBeat(field, step.getCheck(), step.getPositionAfterMove().get(0)))
+                stepListRes.add(step);
+        }
+        return stepListRes;
+    }
 }
