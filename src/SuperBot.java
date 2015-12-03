@@ -35,7 +35,7 @@ public class SuperBot implements CheckersBot{
         }
         List<Step> stepsForHeat = stepCalculator.getHeatSteps(field, stepList);
         return stepsForHeat.isEmpty() ?
-                stepList.get(random.nextInt(stepList.size() - 1)) :
+                stepList.get(stepList.size() == 1 ? 0 : random.nextInt(stepList.size() - 1)) :
                 stepsForHeat.get(stepsForHeat.size() == 1 ? 0 : random.nextInt(stepsForHeat.size() - 1));
     }
 

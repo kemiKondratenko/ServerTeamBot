@@ -78,7 +78,7 @@ public class CheckersRulesHolder {
             return false;
         if(nextStep.getPositionAfterMove().size() > 1){
             for (Position position : nextStep.getPositionAfterMove()) {
-                result &= isHeatStep(ourCheck.getPosition(), position);
+                result &= isHeatStep(ourCheck, position);
                 result &= calculateNextField(currentField, ourCheck, position);
             }
         }else {
@@ -88,7 +88,7 @@ public class CheckersRulesHolder {
     }
 
     private boolean checkNeedToHeat(Field currentField, Check ourCheck, Position stepTo) {
-        if(isSimpleStep(ourCheck.getPosition(), stepTo)){
+        if(isSimpleStep(ourCheck, stepTo)){
           for (Check check : currentField.getAllChecks()){
               if(check.getColor() != ourCheck.getColor())
                   continue;
@@ -150,7 +150,7 @@ public class CheckersRulesHolder {
     }
 
     public void step(Field currentField, Check check, Position position) {
-        if (isSimpleStep(check.getPosition(), position)) {
+        if (isSimpleStep(check, position)) {
             makeSimpleStep(currentField, check, position);
         } else {
             makeHeatStep(currentField, check, position);
@@ -178,7 +178,7 @@ public class CheckersRulesHolder {
     }
 
     private boolean canStep(Field currentField, Check check, Position position) {
-        return isSimpleStep(check.getPosition(), position)
+        return isSimpleStep(check, position)
                 || canBeat(currentField, check, position);
     }
 
@@ -186,7 +186,7 @@ public class CheckersRulesHolder {
         boolean result = true;
         result &= isPositionValid(currentField, position);// there is no other checks on positio
         result &= isPositionValid(position);//position is in borders
-        result &= isHeatStep(check.getPosition(), position);
+        result &= isHeatStep(check, position);
         result &= (isQueenStep(check.getPosition(), position) && check.isQueen())
                 || isSimpleCheckStep(check.getPosition(), position);
 
@@ -197,14 +197,20 @@ public class CheckersRulesHolder {
         return result;
     }
 
-    private boolean isSimpleStep(Position position, Position positionNew) {
+    private boolean isSimpleStep(Check check, Position positionNew) {
+        Position position = check.getPosition();
         return Math.abs(position.getY() - positionNew.getY()) == Math.abs(position.getX() - positionNew.getX())
-                && Math.abs(position.getY() - positionNew.getY()) == 1;
+                && Math.abs(position.getY() - positionNew.getY()) == 1
+                && ((isQueenStep(position, positionNew) && check.isQueen())
+                || isSimpleCheckStep(position, positionNew));
     }
 
-    private boolean isHeatStep(Position position, Position positionNew) {
+    private boolean isHeatStep(Check check, Position positionNew) {
+        Position position = check.getPosition();
         return Math.abs(position.getY() - positionNew.getY()) == Math.abs(position.getX() - positionNew.getX())
-                && Math.abs(position.getY() - positionNew.getY()) == 2;
+                && Math.abs(position.getY() - positionNew.getY()) == 2
+                && ((isQueenStep(position, positionNew) && check.isQueen())
+                || isSimpleCheckStep(position, positionNew));
     }
 
     private boolean isQueenStep(Position position, Position positionNew) {
