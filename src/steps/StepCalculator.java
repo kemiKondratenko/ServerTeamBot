@@ -29,8 +29,6 @@ public class StepCalculator {
         for(Check check : fieldUtil.getWhiteChecks(field)){
             stepList.addAll(validSteps(field, check));
         }
-        tree = new FieldTree(field);
-        System.out.println(tree.getBestField());
         List<Step> stepsForHeat = getHeatSteps(field, stepList);
 
         return stepsForHeat.isEmpty() ?

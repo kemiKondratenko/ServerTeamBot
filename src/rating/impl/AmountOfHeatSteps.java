@@ -16,7 +16,7 @@ public class AmountOfHeatSteps implements Rater{
     }
 
     @Override
-    public int rate(Field field) {
+    public double rate(Field field) {
         return stepCalculator.getHeatSteps(field, stepCalculator.validSteps(field)).size();
     }
 }

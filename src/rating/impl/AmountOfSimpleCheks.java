@@ -17,8 +17,8 @@ public class AmountOfSimpleCheks implements Rater{
     }
 
     @Override
-    public int rate(Field field) {
-        int res = 0;
+    public double rate(Field field) {
+        double res = 0;
         for(Check check : fieldUtil.getWhiteChecks(field)){
             if(!check.isQueen())
                 res++;

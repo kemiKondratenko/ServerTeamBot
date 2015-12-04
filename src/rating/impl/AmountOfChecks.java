@@ -16,9 +16,9 @@ public class AmountOfChecks implements Rater{
     }
 
     @Override
-    public int rate(Field field) {
-        int my = fieldUtil.getWhiteChecks(field).size();
-        int his = field.getAllChecks().size() - fieldUtil.getWhiteChecks(field).size();
+    public double rate(Field field) {
+        double my = fieldUtil.getWhiteChecks(field).size();
+        double his = field.getAllChecks().size() - fieldUtil.getWhiteChecks(field).size();
         return my - his;
     }
 }

@@ -17,7 +17,7 @@ public class AmountOfQueen implements Rater {
     }
 
     @Override
-    public int rate(Field field) {
+    public double rate(Field field) {
         int res = 0;
         for(Check check : fieldUtil.getWhiteChecks(field)){
             if(check.isQueen())

@@ -2,6 +2,7 @@ import com.checkers.client.CheckersBot;
 import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Step;
+import field.processor.FieldCalculator;
 import steps.CheckersRulesHolder;
 import steps.StepCalculator;
 import utils.FieldUtil;
@@ -30,7 +31,8 @@ public class SuperBot implements CheckersBot{
 
     @Override
     public Step calculateNextStep(Field field) {
-        return stepCalculator.validSteps(field).get(0);
+        FieldCalculator fieldCalculator = new FieldCalculator(field, 2);
+        return fieldCalculator.getBestStep(field);
     }
 
     private Step getStep(Field field, Field newField) {

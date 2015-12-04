@@ -16,7 +16,7 @@ public class AmountOfSteps implements Rater{
     }
 
     @Override
-    public int rate(Field field) {
+    public double rate(Field field) {
         return stepCalculator.validSteps(field).size();
     }
 }

@@ -70,7 +70,7 @@ public class CheckersRulesHolder {
         return calculateNextField(currentField, nextStep);
     }
 
-    private boolean calculateNextField(Field currentField, Step nextStep) {
+    public boolean calculateNextField(Field currentField, Step nextStep) {
         boolean result = true;
         Check ourCheck = nextStep.getCheck();
         if(nextStep.getPositionAfterMove().isEmpty()
