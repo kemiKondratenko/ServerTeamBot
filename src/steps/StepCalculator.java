@@ -4,6 +4,7 @@ import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Position;
 import com.checkers.domain.vo.Step;
+import rating.FieldTree;
 import utils.FieldUtil;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class StepCalculator {
 
     CheckersRulesHolder checkersRulesHolder;
     FieldUtil fieldUtil;
+    FieldTree tree;
 
     public StepCalculator(CheckersRulesHolder checkersRulesHolder, FieldUtil fieldUtil) {
         this.checkersRulesHolder = checkersRulesHolder;
@@ -27,8 +29,8 @@ public class StepCalculator {
         for(Check check : fieldUtil.getWhiteChecks(field)){
             stepList.addAll(validSteps(field, check));
         }
-
-
+        tree = new FieldTree(field);
+        System.out.println(tree.getBestField());
         List<Step> stepsForHeat = getHeatSteps(field, stepList);
 
         return stepsForHeat.isEmpty() ?

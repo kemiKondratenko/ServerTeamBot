@@ -32,7 +32,6 @@ public class FieldTree {
         HashMap<FieldNode, Integer> max_2 = new HashMap<FieldNode, Integer>();
         for (FieldNode n : nodes) {
             min_3 = new HashMap<FieldNode, Integer>();
-
             for (FieldNode n1 : n.getOponentsFields()) {
                 int m2 = 12;
                 for (FieldNode n2 : n1.getOponentsFields()) {
