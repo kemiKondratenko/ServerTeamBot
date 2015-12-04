@@ -1,7 +1,7 @@
 import com.checkers.client.CheckersBot;
+import com.checkers.domain.vo.Check;
 import com.checkers.domain.vo.Field;
 import com.checkers.domain.vo.Step;
-import rating.FieldTree;
 import steps.CheckersRulesHolder;
 import steps.StepCalculator;
 import utils.FieldUtil;
@@ -19,7 +19,6 @@ public class SuperBot implements CheckersBot{
     StepCalculator stepCalculator;
     FieldUtil fieldUtil;
     Random random;
-    FieldTree tree;
 
 
     public SuperBot(){
@@ -32,6 +31,33 @@ public class SuperBot implements CheckersBot{
     @Override
     public Step calculateNextStep(Field field) {
         return stepCalculator.validSteps(field).get(0);
+    }
+
+    private Step getStep(Field field, Field newField) {
+        Check seemFrom = null;
+        Check seemTo = null;
+
+        for (Check check : fieldUtil.getWhiteChecks(field)){
+            for (Check checkNew : fieldUtil.getWhiteChecks(newField)){
+                if(!check.getPosition().equals(checkNew.getPosition())) {
+                    seemFrom = check;
+                    seemTo = checkNew;
+                    break;
+                }
+            }
+        }
+        System.out.println("X "+seemFrom.getPosition().getX() +
+        " Y "+ seemFrom.getPosition().getY());
+        System.out.println("X "+seemTo.getPosition().getX() +
+                " Y "+ seemTo.getPosition().getY());
+        for (Step stepRes : stepCalculator.validSteps(field)){
+            if(seemFrom.getPosition().equals(stepRes.getCheck().getPosition()) &&
+                    seemTo.getPosition().equals(stepRes.getPositionAfterMove()
+                            .get(stepRes.getPositionAfterMove().size() - 1))) {
+                return stepRes;
+            }
+        }
+        return null;
     }
 
     private List<Step> longest(List<Step> stepsForHeat) {
