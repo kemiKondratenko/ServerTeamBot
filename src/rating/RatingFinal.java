@@ -17,11 +17,11 @@ public class RatingFinal{
 
     public RatingFinal(FieldUtil fieldUtils, StepCalculator stepCalculator) {
         raters = new HashMap<Double, Rater>();
-        raters.put(1.9, new AmountOfChecks(fieldUtils));
+        raters.put(0.4, new AmountOfChecks(fieldUtils));
         raters.put(1.3, new AmountOfSteps(stepCalculator));
-        raters.put(1.2, new AmountOfSimpleCheks(fieldUtils));
-        raters.put(1.5, new AmountOfQueen(fieldUtils));
-        raters.put(1.4, new AmountOfHeatSteps(stepCalculator));
+        raters.put(0.1, new AmountOfSimpleCheks(fieldUtils));
+        raters.put(1.9, new AmountOfQueen(fieldUtils));
+        raters.put(1.7, new AmountOfHeatSteps(stepCalculator));
     }
 
     public double rate(Field field) {
